@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Halem Ops | Event Control Center - SG 2026</title>
-    <link rel="icon" type="image/png" href="https://i.imgur.com/bEd62zX.png">
-
+    <title>CRONY | Event Control Center - 2026</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -23,41 +22,18 @@
     </script>
     
     <style>
-        /* Custom Scrollbar for sleek look */
+        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #475569; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: #64748b; }
         
         /* Glassmorphism Utilities */
-        .glass-panel {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-        }
-        .glass-button {
-            background: linear-gradient(135deg, rgba(236, 72, 153, 0.1) 0%, rgba(219, 39, 119, 0.1) 100%);
-            border: 1px solid rgba(236, 72, 153, 0.2);
-            color: #f472b6;
-            transition: all 0.3s ease;
-        }
-        .glass-button:hover {
-            background: linear-gradient(135deg, rgba(236, 72, 153, 0.2) 0%, rgba(219, 39, 119, 0.2) 100%);
-            border-color: rgba(236, 72, 153, 0.4);
-            transform: translateY(-1px);
-        }
-        .glass-input {
-            background: rgba(30, 41, 59, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #f8fafc;
-        }
-        .glass-input:focus {
-            outline: none;
-            border-color: #f472b6;
-            box-shadow: 0 0 0 1px #f472b6;
-        }
+        .glass-panel { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); }
+        .glass-button { background: linear-gradient(135deg, rgba(236, 72, 153, 0.1) 0%, rgba(219, 39, 119, 0.1) 100%); border: 1px solid rgba(236, 72, 153, 0.2); color: #f472b6; transition: all 0.3s ease; }
+        .glass-button:hover { background: linear-gradient(135deg, rgba(236, 72, 153, 0.2) 0%, rgba(219, 39, 119, 0.2) 100%); border-color: rgba(236, 72, 153, 0.4); transform: translateY(-1px); }
+        .glass-input { background: rgba(30, 41, 59, 0.5); border: 1px solid rgba(255, 255, 255, 0.1); color: #f8fafc; }
+        .glass-input:focus { outline: none; border-color: #f472b6; box-shadow: 0 0 0 1px #f472b6; }
 
         /* Status Badges */
         .badge-confirmed { background: rgba(16, 185, 129, 0.1); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.2); }
@@ -69,22 +45,33 @@
         .pay-unpaid { background: rgba(100, 116, 139, 0.1); color: #94a3b8; border: 1px solid rgba(100, 116, 139, 0.2); }
 
         [x-cloak] { display: none !important; }
+
+        /* PROFESSIONAL PRINT STYLES (Visa/Corporate Standard) */
+        @media print {
+            body * { visibility: hidden; }
+            #printable-invoice, #printable-invoice * { visibility: visible; }
+            #printable-invoice { position: absolute; left: 0; top: 0; width: 100%; background: white !important; color: #1e293b !important; }
+            .no-print { display: none !important; }
+            /* Reset body background for printing */
+            body { background: white !important; }
+            @page { margin: 15mm; }
+        }
     </style>
 </head>
 
 <body class="bg-[#0f172a] text-slate-200 font-sans h-screen flex overflow-hidden relative" x-data="adminSystem()">
 
-    <div class="absolute top-0 left-1/4 w-96 h-96 bg-pink-500/10 rounded-full blur-3xl pointer-events-none"></div>
-    <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute top-0 left-1/4 w-96 h-96 bg-pink-500/10 rounded-full blur-3xl pointer-events-none no-print"></div>
+    <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl pointer-events-none no-print"></div>
 
-    <div x-show="!isLoggedIn" class="absolute inset-0 flex items-center justify-center p-4 z-50 bg-[#0f172a]/80 backdrop-blur-sm" x-transition>
+    <div x-show="!isLoggedIn" class="absolute inset-0 flex items-center justify-center p-4 z-50 bg-[#0f172a]/80 backdrop-blur-sm no-print" x-transition>
         <div class="glass-panel p-10 w-full max-w-md text-center rounded-2xl relative overflow-hidden">
-            <div class="w-16 h-16 mx-auto rounded-xl bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center font-bold text-white shadow-lg shadow-pink-500/30 mb-6 text-2xl">H</div>
-            <h2 class="text-2xl font-bold text-white mb-2">Halem Ops Admin</h2>
+            <div class="w-16 h-16 mx-auto rounded-xl bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center font-bold text-white shadow-lg shadow-pink-500/30 mb-6 text-2xl">C</div>
+            <h2 class="text-2xl font-bold text-white mb-2">CRONY Admin</h2>
             <p class="text-slate-400 text-xs mb-8">Access Control Center</p>
             <form @submit.prevent="login">
                 <div class="mb-6">
-                    <input type="password" x-model="password" placeholder="Passcode" class="glass-input w-full px-4 py-3 rounded-xl text-center text-lg tracking-widest placeholder-slate-500">
+                    <input type="password" x-model="password" placeholder="Passcode (1234)" class="glass-input w-full px-4 py-3 rounded-xl text-center text-lg tracking-widest placeholder-slate-500">
                     <p x-show="loginError" class="text-red-400 text-xs mt-2" x-cloak>Incorrect passcode</p>
                 </div>
                 <button type="submit" class="w-full bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 rounded-xl transition shadow-lg shadow-pink-600/20">Enter System</button>
@@ -92,37 +79,26 @@
         </div>
     </div>
 
-    <div x-show="isLoggedIn" x-cloak class="flex w-full h-full relative z-10">
+    <div x-show="isLoggedIn" x-cloak class="flex w-full h-full relative z-10 no-print">
         
         <aside class="w-64 glass-panel border-r border-slate-700/50 flex-col justify-between hidden md:flex rounded-none h-full z-20">
             <div class="p-6">
                 <div class="flex items-center gap-3 mb-10">
-                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center font-bold text-white shadow-lg shadow-pink-500/30">H</div>
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center font-bold text-white shadow-lg shadow-pink-500/30">C</div>
                     <div>
-                        <h1 class="font-bold text-lg tracking-wide text-white">HALEM OPS</h1>
-                        <p class="text-[10px] text-slate-400 uppercase tracking-widest">SG 2026 Live</p>
+                        <h1 class="font-bold text-lg tracking-wide text-white">CRONY</h1>
+                        <p class="text-[10px] text-slate-400 uppercase tracking-widest">System Live</p>
                     </div>
                 </div>
 
                 <nav class="space-y-2 text-sm font-medium">
-                    <button @click="currentTab = 'dashboard'" :class="currentTab === 'dashboard' ? 'bg-pink-500/10 text-pink-400 border-r-2 border-pink-500' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'" class="w-full text-left px-4 py-3 rounded-lg transition-all flex items-center gap-3">
-                        <i class="fas fa-th-large w-5"></i> Dashboard
-                    </button>
-                    <button @click="currentTab = 'reg'" :class="currentTab === 'reg' ? 'bg-pink-500/10 text-pink-400 border-r-2 border-pink-500' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'" class="w-full text-left px-4 py-3 rounded-lg transition-all flex items-center gap-3">
-                        <i class="fas fa-file-alt w-5"></i> Registration
-                    </button>
-                    <button @click="currentTab = 'payment'" :class="currentTab === 'payment' ? 'bg-pink-500/10 text-pink-400 border-r-2 border-pink-500' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'" class="w-full text-left px-4 py-3 rounded-lg transition-all flex items-center gap-3">
-                        <i class="fas fa-file-invoice-dollar w-5"></i> Payments
-                    </button>
-                    <button @click="currentTab = 'customers'" :class="currentTab === 'customers' ? 'bg-pink-500/10 text-pink-400 border-r-2 border-pink-500' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'" class="w-full text-left px-4 py-3 rounded-lg transition-all flex items-center gap-3">
-                        <i class="fas fa-users w-5"></i> Customers
-                    </button>
-                    <button @click="currentTab = 'analytics'" :class="currentTab === 'analytics' ? 'bg-pink-500/10 text-pink-400 border-r-2 border-pink-500' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'" class="w-full text-left px-4 py-3 rounded-lg transition-all flex items-center gap-3">
-                        <i class="fas fa-chart-pie w-5"></i> Analytics
-                    </button>
-                    <button @click="currentTab = 'settings'" :class="currentTab === 'settings' ? 'bg-pink-500/10 text-pink-400 border-r-2 border-pink-500' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'" class="w-full text-left px-4 py-3 rounded-lg transition-all flex items-center gap-3">
-                        <i class="fas fa-cog w-5"></i> Settings
-                    </button>
+                    <button @click="currentTab = 'dashboard'" :class="currentTab === 'dashboard' ? 'bg-pink-500/10 text-pink-400 border-r-2 border-pink-500' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'" class="w-full text-left px-4 py-3 rounded-lg transition-all flex items-center gap-3"><i class="fas fa-th-large w-5"></i> Dashboard</button>
+                    <button @click="currentTab = 'reg'" :class="currentTab === 'reg' ? 'bg-pink-500/10 text-pink-400 border-r-2 border-pink-500' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'" class="w-full text-left px-4 py-3 rounded-lg transition-all flex items-center gap-3"><i class="fas fa-file-alt w-5"></i> Registration</button>
+                    <button @click="currentTab = 'payment'" :class="currentTab === 'payment' ? 'bg-pink-500/10 text-pink-400 border-r-2 border-pink-500' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'" class="w-full text-left px-4 py-3 rounded-lg transition-all flex items-center gap-3"><i class="fas fa-money-check-alt w-5"></i> Payments</button>
+                    <button @click="currentTab = 'invoices'" :class="currentTab === 'invoices' ? 'bg-pink-500/10 text-pink-400 border-r-2 border-pink-500' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'" class="w-full text-left px-4 py-3 rounded-lg transition-all flex items-center gap-3"><i class="fas fa-file-invoice w-5"></i> Invoices</button>
+                    <button @click="currentTab = 'customers'" :class="currentTab === 'customers' ? 'bg-pink-500/10 text-pink-400 border-r-2 border-pink-500' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'" class="w-full text-left px-4 py-3 rounded-lg transition-all flex items-center gap-3"><i class="fas fa-users w-5"></i> Customers</button>
+                    <button @click="currentTab = 'analytics'" :class="currentTab === 'analytics' ? 'bg-pink-500/10 text-pink-400 border-r-2 border-pink-500' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'" class="w-full text-left px-4 py-3 rounded-lg transition-all flex items-center gap-3"><i class="fas fa-chart-pie w-5"></i> Analytics</button>
+                    <button @click="currentTab = 'settings'" :class="currentTab === 'settings' ? 'bg-pink-500/10 text-pink-400 border-r-2 border-pink-500' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'" class="w-full text-left px-4 py-3 rounded-lg transition-all flex items-center gap-3"><i class="fas fa-cog w-5"></i> Settings</button>
                 </nav>
             </div>
             
@@ -233,13 +209,10 @@
 
                             <div class="mt-6 pt-4 border-t border-slate-700/50 flex justify-end gap-3">
                                 <button @click="openEditModal(booking)" class="text-xs text-slate-400 hover:text-white flex items-center gap-1.5 transition">
-                                    <i class="fas fa-edit"></i> Edit
-                                </button>
-                                <button @click="printInvoice(booking)" class="text-xs text-slate-400 hover:text-white flex items-center gap-1.5 transition">
-                                    <i class="fas fa-print"></i> Invoice
+                                    <i class="fas fa-edit"></i> Edit Details
                                 </button>
                                 <button @click="saveData(booking)" class="bg-pink-600/20 hover:bg-pink-600/30 text-pink-400 border border-pink-500/30 px-4 py-1.5 rounded-lg text-xs font-medium transition flex items-center gap-1.5 ml-2">
-                                    <i class="fas fa-save"></i> Save
+                                    <i class="fas fa-save"></i> Save Changes
                                 </button>
                             </div>
                         </div>
@@ -253,9 +226,6 @@
                     <div class="relative flex-1 max-w-md group">
                         <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
                         <input type="text" x-model="regSearch" placeholder="Search forms by Company, ID, Address..." class="glass-input w-full rounded-xl pl-12 pr-4 py-2.5 text-sm">
-                    </div>
-                    <div x-show="regSearch" class="flex items-center">
-                        <button @click="regSearch = ''" class="glass-button px-3 py-2 text-xs rounded-lg">Clear</button>
                     </div>
                 </div>
 
@@ -313,38 +283,81 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <template x-for="b in filteredPaymentBookings" :key="b.id">
-                        <div class="glass-panel p-6 rounded-2xl flex flex-col md:flex-row gap-6 items-center">
-                            <div class="flex-1 w-full">
-                                <h3 class="font-bold text-white text-lg" x-text="b.company"></h3>
-                                <p class="text-xs text-slate-400 font-mono mb-3" x-text="b.id"></p>
-                                <p class="text-xl font-bold text-pink-400 mb-1">SGD <span x-text="b.total.toLocaleString()"></span></p>
-                                <p class="text-xs text-slate-400">
-                                    Status: <span class="font-bold" :class="b.payment === 'UNPAID' ? 'text-red-400' : (b.payment === 'DEPOSIT' ? 'text-purple-400' : 'text-green-400')" x-text="b.payment"></span>
-                                </p>
-                            </div>
-
-                            <div class="flex-1 flex justify-center w-full">
-                                <div x-show="b.receiptUrl" class="text-center group relative">
-                                    <img :src="b.receiptUrl" class="h-24 w-auto rounded-lg border border-slate-600 cursor-pointer object-cover" @click="viewImage(b.receiptUrl)">
-                                    <div class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-lg pointer-events-none text-white text-xs">View</div>
+                        <div class="glass-panel p-6 rounded-2xl flex flex-col gap-4">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h3 class="font-bold text-white text-lg" x-text="b.company"></h3>
+                                    <p class="text-xs text-slate-400 font-mono" x-text="b.id"></p>
+                                    <p class="text-xl font-bold text-pink-400 mt-2">SGD <span x-text="b.total.toLocaleString()"></span></p>
                                 </div>
-                                <div x-show="!b.receiptUrl" class="w-full max-w-[140px]">
-                                    <button @click="openUploadModal(b, 'Payment Slip')" class="w-full border-2 border-dashed border-slate-600 rounded-xl h-24 flex flex-col items-center justify-center text-slate-400 hover:text-pink-400 hover:border-pink-500/50 transition bg-slate-800/30">
-                                        <i class="fas fa-cloud-upload-alt text-xl mb-1"></i>
-                                        <span class="text-[10px]">Upload Slip</span>
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div class="w-full md:w-auto">
-                                <select x-model="b.payment" class="glass-input w-full md:w-32 rounded-lg p-2 text-xs font-bold text-center">
+                                <select x-model="b.payment" @change="saveData(b)" class="glass-input rounded-lg p-1.5 text-[10px] font-bold text-center w-28">
                                     <option value="UNPAID">UNPAID</option>
                                     <option value="DEPOSIT">DEPOSIT</option>
                                     <option value="FULL PAID">FULL PAID</option>
                                 </select>
                             </div>
+
+                            <div class="grid grid-cols-2 gap-4 mt-2 pt-4 border-t border-slate-700/50">
+                                <div class="flex flex-col items-center">
+                                    <p class="text-[10px] font-bold text-slate-400 mb-2 uppercase">Deposit Slip</p>
+                                    <div x-show="b.receiptDeposit" class="relative group cursor-pointer w-full" @click="viewImage(b.receiptDeposit)">
+                                        <img :src="b.receiptDeposit" class="h-24 w-full object-cover rounded-lg border border-slate-600">
+                                        <div class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-lg text-white text-xs">View</div>
+                                    </div>
+                                    <button x-show="!b.receiptDeposit" @click="openUploadModal(b, 'Deposit')" class="w-full border-2 border-dashed border-slate-600 rounded-lg h-24 flex flex-col items-center justify-center text-slate-400 hover:text-pink-400 hover:bg-slate-800/30 text-xs transition">
+                                        <i class="fas fa-cloud-upload-alt mb-1 text-lg"></i> Upload
+                                    </button>
+                                </div>
+                                
+                                <div class="flex flex-col items-center">
+                                    <p class="text-[10px] font-bold text-slate-400 mb-2 uppercase">Balance Slip</p>
+                                    <div x-show="b.receiptBalance" class="relative group cursor-pointer w-full" @click="viewImage(b.receiptBalance)">
+                                        <img :src="b.receiptBalance" class="h-24 w-full object-cover rounded-lg border border-slate-600">
+                                        <div class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-lg text-white text-xs">View</div>
+                                    </div>
+                                    <button x-show="!b.receiptBalance" @click="openUploadModal(b, 'Balance')" class="w-full border-2 border-dashed border-slate-600 rounded-lg h-24 flex flex-col items-center justify-center text-slate-400 hover:text-pink-400 hover:bg-slate-800/30 text-xs transition">
+                                        <i class="fas fa-cloud-upload-alt mb-1 text-lg"></i> Upload
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </template>
+                </div>
+            </div>
+
+            <div x-show="currentTab === 'invoices'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0" style="display: none;" class="space-y-6">
+                
+                <div class="glass-panel p-6 rounded-2xl mb-6">
+                    <p class="text-sm font-bold text-white mb-1">Document Generation Center</p>
+                    <p class="text-xs text-slate-400">Generate professional, Visa-style Invoices and Official Receipts.</p>
+                </div>
+
+                <div class="glass-panel rounded-2xl overflow-hidden">
+                    <table class="w-full text-sm text-left">
+                        <thead class="bg-slate-800/80 border-b border-slate-700/50 text-slate-300 text-xs uppercase font-bold tracking-wider">
+                            <tr>
+                                <th class="py-4 px-6">Company & ID</th>
+                                <th class="py-4 px-6">Amount Due</th>
+                                <th class="py-4 px-6">Status</th>
+                                <th class="py-4 px-6 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-700/50">
+                            <template x-for="b in bookings" :key="b.id">
+                                <tr class="hover:bg-slate-800/30 transition-colors">
+                                    <td class="py-4 px-6"><p class="font-bold text-white" x-text="b.company"></p><p class="text-[10px] text-pink-400 font-mono mt-0.5" x-text="b.id"></p></td>
+                                    <td class="py-4 px-6 text-white font-medium" x-text="'SGD ' + b.total.toLocaleString()"></td>
+                                    <td class="py-4 px-6">
+                                        <span class="text-[10px] font-bold px-2.5 py-1 rounded-md" :class="b.payment === 'FULL PAID' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : (b.payment === 'DEPOSIT' ? 'bg-purple-500/10 text-purple-400 border border-purple-500/20' : 'bg-rose-500/10 text-rose-400 border border-rose-500/20')" x-text="b.payment"></span>
+                                    </td>
+                                    <td class="py-4 px-6 text-right space-x-2">
+                                        <button @click="triggerPrint(b, 'Invoice')" class="bg-slate-700 hover:bg-slate-600 text-white px-3 py-1.5 rounded-lg text-xs transition font-medium border border-slate-600"><i class="fas fa-file-invoice mr-1.5"></i> Print Invoice</button>
+                                        <button x-show="b.payment !== 'UNPAID'" @click="triggerPrint(b, 'Receipt')" class="bg-pink-600 hover:bg-pink-700 text-white px-3 py-1.5 rounded-lg text-xs transition font-medium"><i class="fas fa-receipt mr-1.5"></i> Print Receipt</button>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
@@ -356,21 +369,19 @@
                         <input type="text" x-model="customerSearch" placeholder="Search directory..." class="glass-input w-full rounded-xl pl-12 pr-4 py-2.5 text-sm">
                     </div>
                     <button @click="openAddCustomerModal" class="bg-pink-600 hover:bg-pink-700 text-white px-4 py-2.5 rounded-xl text-sm font-medium transition flex items-center gap-2">
-                        <i class="fas fa-plus"></i> New Customer
+                        <i class="fas fa-plus"></i> Add Customer
                     </button>
                 </div>
 
                 <div class="glass-panel rounded-2xl overflow-x-auto">
                     <table class="w-full text-sm text-left whitespace-nowrap">
-                        <thead>
-                            <tr class="text-slate-400 border-b border-slate-700/50 bg-slate-800/30">
-                                <th class="py-4 px-6 font-medium">ID</th>
-                                <th class="py-4 px-6 font-medium">Company / PIC</th>
-                                <th class="py-4 px-6 font-medium">Contact</th>
-                                <th class="py-4 px-6 font-medium">Total</th>
-                                <th class="py-4 px-6 font-medium">Paid</th>
-                                <th class="py-4 px-6 font-medium">Balance</th>
-                                <th class="py-4 px-6 font-medium">Status</th>
+                        <thead class="bg-slate-800/80 border-b border-slate-700/50 text-slate-300 text-xs uppercase font-bold tracking-wider">
+                            <tr>
+                                <th class="py-4 px-6">ID</th>
+                                <th class="py-4 px-6">Company / PIC</th>
+                                <th class="py-4 px-6">Contact Info</th>
+                                <th class="py-4 px-6">Billing / Addr</th>
+                                <th class="py-4 px-6 text-right">Action</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-700/50">
@@ -385,13 +396,13 @@
                                         <p x-text="b.phone"></p>
                                         <p x-text="b.email"></p>
                                     </td>
-                                    <td class="py-4 px-6 font-bold text-white" x-text="'SGD ' + b.total.toLocaleString()"></td>
-                                    <td class="py-4 px-6 font-bold text-emerald-400" x-text="'SGD ' + b.paid.toLocaleString()"></td>
-                                    <td class="py-4 px-6 font-bold text-rose-400" x-text="'SGD ' + b.balance.toLocaleString()"></td>
-                                    <td class="py-4 px-6">
-                                        <span class="px-2.5 py-1 rounded-md text-[10px] font-bold uppercase" 
-                                              :class="{'badge-confirmed': b.status === 'CONFIRMED', 'badge-pending': b.status === 'PENDING', 'badge-cancelled': b.status === 'CANCELLED'}" 
-                                              x-text="b.status"></span>
+                                    <td class="py-4 px-6 text-xs text-slate-400">
+                                        <p class="truncate w-40" x-text="b.billingAddress || 'No Address'"></p>
+                                    </td>
+                                    <td class="py-4 px-6 text-right">
+                                        <button @click="openEditModal(b)" class="bg-slate-700 hover:bg-slate-600 text-white px-3 py-1.5 rounded-lg text-xs font-medium transition">
+                                            <i class="fas fa-edit mr-1"></i> Edit
+                                        </button>
                                     </td>
                                 </tr>
                             </template>
@@ -465,7 +476,6 @@
             </div>
 
             <div x-show="currentTab === 'settings'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0" style="display: none;" class="space-y-6">
-                
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <div class="glass-panel p-6 rounded-2xl">
                         <h4 class="font-bold text-white mb-4 flex items-center gap-2"><i class="fas fa-user text-pink-400"></i> Profile Settings</h4>
@@ -510,12 +520,111 @@
         </main>
     </div>
 
-    <div x-show="toastMessage !== ''" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-10" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-200" class="fixed bottom-8 right-8 z-[200] glass-panel bg-slate-800/90 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center gap-3" style="display: none;" x-cloak>
+    <div id="printable-invoice" class="hidden absolute top-0 left-0 w-full min-h-screen bg-white text-gray-800 p-8 z-[999]">
+        <div class="flex justify-between items-start border-b-4 border-gray-800 pb-6 mb-8">
+            <div class="flex items-center gap-4">
+                <div class="w-16 h-16 bg-gray-800 text-white flex items-center justify-center font-black text-3xl rounded">C</div>
+                <div>
+                    <h1 class="text-3xl font-black text-gray-900 tracking-tight">CRONY.</h1>
+                    <p class="text-[10px] font-bold text-gray-500 tracking-widest uppercase mt-1">Event Management</p>
+                </div>
+            </div>
+            <div class="text-right">
+                <h2 class="text-4xl font-black text-gray-800 uppercase tracking-tight" x-text="printData.docType">INVOICE</h2>
+                <div class="mt-4 flex flex-col items-end text-sm">
+                    <div class="flex gap-4"><span class="font-bold text-gray-500 w-24 text-right">Reference:</span> <span class="font-bold text-gray-900 w-32 text-left" x-text="printData.docType === 'Invoice' ? 'INV-' + printData.id : 'REC-' + printData.id"></span></div>
+                    <div class="flex gap-4 mt-1"><span class="font-bold text-gray-500 w-24 text-right">Issue Date:</span> <span class="text-gray-900 w-32 text-left" x-text="new Date().toLocaleDateString('en-GB')"></span></div>
+                    <div class="flex gap-4 mt-1"><span class="font-bold text-gray-500 w-24 text-right">Status:</span> <span class="font-bold w-32 text-left uppercase" :class="printData.payment === 'FULL PAID' ? 'text-green-600' : 'text-red-600'" x-text="printData.payment"></span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex justify-between mb-10">
+            <div class="w-1/2 pr-8">
+                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">Billed To</p>
+                <h3 class="text-lg font-bold text-gray-900 mb-1" x-text="printData.company"></h3>
+                <p class="text-sm font-medium text-gray-700" x-text="'ATTN: ' + printData.pic"></p>
+                <p class="text-sm text-gray-600 mt-1" x-text="printData.billingAddress || 'No Address Provided'"></p>
+                <p class="text-sm text-gray-600 mt-1" x-text="'Phone: ' + printData.phone"></p>
+                <p class="text-sm text-gray-600" x-text="'Email: ' + printData.email"></p>
+            </div>
+            <div class="w-1/2 pl-8 border-l border-gray-200">
+                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">Merchant Details</p>
+                <h3 class="text-base font-bold text-gray-900 mb-1">CRONY EVENTS PTE LTD</h3>
+                <p class="text-sm text-gray-600">123 Event Hub, Business District</p>
+                <p class="text-sm text-gray-600">Singapore 567890</p>
+                <p class="text-sm text-gray-600 mt-2">Registration No: 202612345E</p>
+                <p class="text-sm text-gray-600">finance@crony-events.com</p>
+            </div>
+        </div>
+
+        <table class="w-full text-left mb-8 border-collapse">
+            <thead>
+                <tr class="bg-gray-800 text-white text-xs uppercase tracking-wider">
+                    <th class="py-3 px-4 font-bold border-b border-gray-800 w-3/5">Description</th>
+                    <th class="py-3 px-4 font-bold border-b border-gray-800 text-center w-1/5">Booths</th>
+                    <th class="py-3 px-4 font-bold border-b border-gray-800 text-right w-1/5">Amount (SGD)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="border-b border-gray-200">
+                    <td class="py-5 px-4">
+                        <p class="font-bold text-gray-900 text-base">Food Festival 2026 - Event Space Rental</p>
+                        <p class="text-xs text-gray-500 mt-1">Includes basic shell scheme setup, 1x 13Amp power supply, and standard vendor passes.</p>
+                        <p class="text-xs text-gray-500 mt-1" x-text="'Items to sell: ' + (printData.sellingItems || 'Standard F&B')"></p>
+                    </td>
+                    <td class="py-5 px-4 text-center font-bold text-gray-900" x-text="printData.booths ? printData.booths.join(', ') : ''"></td>
+                    <td class="py-5 px-4 text-right font-bold text-gray-900" x-text="printData.total ? printData.total.toLocaleString(undefined, {minimumFractionDigits: 2}) : '0.00'"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="flex justify-end mb-12">
+            <div class="w-1/2 lg:w-1/3">
+                <div class="flex justify-between py-2 border-b border-gray-200 text-sm">
+                    <span class="font-bold text-gray-600">Subtotal</span>
+                    <span class="font-medium text-gray-900" x-text="printData.total ? printData.total.toLocaleString(undefined, {minimumFractionDigits: 2}) : '0.00'"></span>
+                </div>
+                <div class="flex justify-between py-2 border-b border-gray-200 text-sm">
+                    <span class="font-bold text-gray-600">Tax (0%)</span>
+                    <span class="font-medium text-gray-900">0.00</span>
+                </div>
+                <div class="flex justify-between items-center py-4 text-xl font-black text-gray-900 border-b-4 border-gray-800">
+                    <span>TOTAL DUE</span>
+                    <span x-text="'SGD ' + (printData.total ? printData.total.toLocaleString(undefined, {minimumFractionDigits: 2}) : '0.00')"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex justify-between items-end border-t border-gray-300 pt-6 mt-auto">
+            <div>
+                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">Payment Instructions</p>
+                <div class="bg-gray-50 border border-gray-200 p-3 rounded text-xs text-gray-700">
+                    <p><span class="font-bold w-24 inline-block">Bank Name:</span> DBS Bank Ltd</p>
+                    <p><span class="font-bold w-24 inline-block">Account Name:</span> CRONY EVENTS PTE LTD</p>
+                    <p><span class="font-bold w-24 inline-block">Account No:</span> 012-345678-9</p>
+                    <p><span class="font-bold w-24 inline-block">PayNow UEN:</span> 202612345E</p>
+                </div>
+                <p class="text-[10px] text-gray-500 mt-2">* Please indicate Invoice Reference Number during transfer.</p>
+            </div>
+            <div class="text-right">
+                <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Authorized Signature</p>
+                <div class="border-b border-gray-400 w-48 ml-auto mb-1"></div>
+                <p class="text-[10px] text-gray-500">Finance Department, CRONY.</p>
+            </div>
+        </div>
+        
+        <div x-show="printData.payment === 'FULL PAID'" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -rotate-45 text-9xl font-black text-green-500 opacity-10 pointer-events-none">
+            PAID
+        </div>
+    </div>
+
+    <div x-show="toastMessage !== ''" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-10" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-200" class="fixed bottom-8 right-8 z-[200] glass-panel bg-slate-800/90 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center gap-3 no-print" style="display: none;" x-cloak>
         <i class="fas fa-check-circle text-pink-400"></i>
         <span x-text="toastMessage" class="text-sm font-medium"></span>
     </div>
 
-    <div x-show="uploadModal.open" class="fixed inset-0 bg-[#0f172a]/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4" x-cloak>
+    <div x-show="uploadModal.open" class="fixed inset-0 bg-[#0f172a]/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4 no-print" x-cloak>
         <div class="glass-panel p-6 w-full max-w-sm rounded-2xl relative border-slate-600">
             <button @click="uploadModal.open = false" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i class="fas fa-times text-xl"></i></button>
             <h3 class="font-bold text-white mb-1 text-lg" x-text="'Upload ' + uploadModal.type"></h3>
@@ -539,43 +648,48 @@
         </div>
     </div>
 
-    <div x-show="editModal.open" class="fixed inset-0 bg-[#0f172a]/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4" x-cloak>
-        <div class="glass-panel w-full max-w-md p-6 rounded-2xl border-slate-600">
-            <h3 class="text-lg font-bold text-white mb-5">Edit Details</h3>
-            <div class="space-y-4">
-                <div><label class="text-[10px] font-bold text-slate-500 uppercase">Company</label><input type="text" x-model="editModal.data.company" class="glass-input w-full rounded-lg p-2.5 text-sm mt-1"></div>
-                <div><label class="text-[10px] font-bold text-slate-500 uppercase">PIC</label><input type="text" x-model="editModal.data.pic" class="glass-input w-full rounded-lg p-2.5 text-sm mt-1"></div>
+    <div x-show="editModal.open" class="fixed inset-0 bg-[#0f172a]/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4 no-print" x-cloak>
+        <div class="glass-panel w-full max-w-lg p-6 rounded-2xl border-slate-600 max-h-[90vh] overflow-y-auto">
+            <h3 class="text-lg font-bold text-white mb-1">Edit Customer Details</h3>
+            <p class="text-xs text-slate-400 mb-5">Updates here will reflect on the invoice generation.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="md:col-span-2"><label class="text-[10px] font-bold text-slate-500 uppercase">Company Name</label><input type="text" x-model="editModal.data.company" class="glass-input w-full rounded-lg p-2.5 text-sm mt-1"></div>
+                <div><label class="text-[10px] font-bold text-slate-500 uppercase">PIC Name</label><input type="text" x-model="editModal.data.pic" class="glass-input w-full rounded-lg p-2.5 text-sm mt-1"></div>
                 <div><label class="text-[10px] font-bold text-slate-500 uppercase">Phone</label><input type="text" x-model="editModal.data.phone" class="glass-input w-full rounded-lg p-2.5 text-sm mt-1"></div>
-                <div><label class="text-[10px] font-bold text-slate-500 uppercase">Email</label><input type="text" x-model="editModal.data.email" class="glass-input w-full rounded-lg p-2.5 text-sm mt-1"></div>
+                <div class="md:col-span-2"><label class="text-[10px] font-bold text-slate-500 uppercase">Email</label><input type="text" x-model="editModal.data.email" class="glass-input w-full rounded-lg p-2.5 text-sm mt-1"></div>
+                <div class="md:col-span-2"><label class="text-[10px] font-bold text-slate-500 uppercase">Billing Address</label><textarea x-model="editModal.data.billingAddress" class="glass-input w-full rounded-lg p-2.5 text-sm mt-1 h-16"></textarea></div>
+                <div><label class="text-[10px] font-bold text-slate-500 uppercase">Selling Items</label><input type="text" x-model="editModal.data.sellingItems" class="glass-input w-full rounded-lg p-2.5 text-sm mt-1"></div>
+                <div><label class="text-[10px] font-bold text-slate-500 uppercase">Total Amount (SGD)</label><input type="number" x-model="editModal.data.total" class="glass-input w-full rounded-lg p-2.5 text-sm mt-1"></div>
             </div>
+            
             <div class="mt-8 flex justify-end gap-3">
-                <button @click="editModal.open = false" class="px-4 py-2 text-slate-400 hover:text-white text-sm font-medium">Cancel</button>
-                <button @click="saveEdit" class="px-5 py-2 bg-pink-600 hover:bg-pink-700 text-white rounded-lg text-sm font-bold transition">Update</button>
+                <button @click="editModal.open = false" class="px-4 py-2 text-slate-400 hover:text-white text-sm font-medium transition">Cancel</button>
+                <button @click="saveEdit" class="px-5 py-2 bg-pink-600 hover:bg-pink-700 text-white rounded-lg text-sm font-bold transition">Save Updates</button>
             </div>
         </div>
     </div>
 
-    <div x-show="addCustomerModal.open" class="fixed inset-0 bg-[#0f172a]/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4" x-cloak>
-        <div class="glass-panel w-full max-w-md p-6 rounded-2xl border-slate-600 max-h-[90vh] overflow-y-auto">
+    <div x-show="addCustomerModal.open" class="fixed inset-0 bg-[#0f172a]/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4 no-print" x-cloak>
+        <div class="glass-panel w-full max-w-lg p-6 rounded-2xl border-slate-600 max-h-[90vh] overflow-y-auto">
             <h3 class="text-lg font-bold text-white mb-5">New Customer Registration</h3>
-            <div class="space-y-4">
-                <div><label class="text-[10px] font-bold text-slate-500 uppercase">Company Name</label><input type="text" x-model="addCustomerModal.data.company" class="glass-input w-full rounded-lg p-2.5 text-sm mt-1"></div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="md:col-span-2"><label class="text-[10px] font-bold text-slate-500 uppercase">Company Name</label><input type="text" x-model="addCustomerModal.data.company" class="glass-input w-full rounded-lg p-2.5 text-sm mt-1"></div>
                 <div><label class="text-[10px] font-bold text-slate-500 uppercase">PIC Name</label><input type="text" x-model="addCustomerModal.data.pic" class="glass-input w-full rounded-lg p-2.5 text-sm mt-1"></div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div><label class="text-[10px] font-bold text-slate-500 uppercase">Phone</label><input type="text" x-model="addCustomerModal.data.phone" class="glass-input w-full rounded-lg p-2.5 text-sm mt-1"></div>
-                    <div><label class="text-[10px] font-bold text-slate-500 uppercase">Total (SGD)</label><input type="number" x-model="addCustomerModal.data.total" class="glass-input w-full rounded-lg p-2.5 text-sm mt-1"></div>
-                </div>
-                <div><label class="text-[10px] font-bold text-slate-500 uppercase">Email</label><input type="text" x-model="addCustomerModal.data.email" class="glass-input w-full rounded-lg p-2.5 text-sm mt-1"></div>
+                <div><label class="text-[10px] font-bold text-slate-500 uppercase">Phone</label><input type="text" x-model="addCustomerModal.data.phone" class="glass-input w-full rounded-lg p-2.5 text-sm mt-1"></div>
+                <div class="md:col-span-2"><label class="text-[10px] font-bold text-slate-500 uppercase">Email</label><input type="text" x-model="addCustomerModal.data.email" class="glass-input w-full rounded-lg p-2.5 text-sm mt-1"></div>
+                <div class="md:col-span-2"><label class="text-[10px] font-bold text-slate-500 uppercase">Billing Address</label><textarea x-model="addCustomerModal.data.billingAddress" class="glass-input w-full rounded-lg p-2.5 text-sm mt-1 h-16"></textarea></div>
                 <div><label class="text-[10px] font-bold text-slate-500 uppercase">Booths (A1, A2)</label><input type="text" x-model="addCustomerModal.data.booths" class="glass-input w-full rounded-lg p-2.5 text-sm mt-1"></div>
+                <div><label class="text-[10px] font-bold text-slate-500 uppercase">Total (SGD)</label><input type="number" x-model="addCustomerModal.data.total" class="glass-input w-full rounded-lg p-2.5 text-sm mt-1"></div>
             </div>
             <div class="mt-8 flex justify-end gap-3">
-                <button @click="addCustomerModal.open = false" class="px-4 py-2 text-slate-400 hover:text-white text-sm font-medium">Cancel</button>
+                <button @click="addCustomerModal.open = false" class="px-4 py-2 text-slate-400 hover:text-white text-sm font-medium transition">Cancel</button>
                 <button @click="saveNewCustomer" class="px-5 py-2 bg-pink-600 hover:bg-pink-700 text-white rounded-lg text-sm font-bold transition">Create Entry</button>
             </div>
         </div>
     </div>
 
-    <div x-show="previewImage.open" class="fixed inset-0 bg-black/95 z-[200] flex items-center justify-center p-4 cursor-pointer" @click="previewImage.open = false" x-cloak>
+    <div x-show="previewImage.open" class="fixed inset-0 bg-black/95 z-[200] flex items-center justify-center p-4 cursor-pointer no-print" @click="previewImage.open = false" x-cloak>
         <img :src="previewImage.url" class="max-w-full max-h-[90vh] rounded-lg shadow-2xl border border-slate-700">
     </div>
 
@@ -589,7 +703,7 @@
                 loginError: false,
                 loading: false,
                 search: '',
-                currentTab: 'dashboard',
+                currentTab: 'invoices', // Show invoices by default for testing
                 bookings: [],
                 
                 regSearch: '',
@@ -601,11 +715,14 @@
                 uploadModal: { open: false, bookingId: null, type: '', preview: null, file: null, loading: false },
                 previewImage: { open: false, url: '' },
                 editModal: { open: false, data: {} },
-                addCustomerModal: { open: false, data: { company: '', pic: '', phone: '', email: '', total: 0, booths: '' } },
+                addCustomerModal: { open: false, data: { company: '', pic: '', phone: '', email: '', total: 0, booths: '', billingAddress: '', sellingItems: '' } },
                 
                 adminUsers: [{ username: 'admin', password: '1234' }],
                 currentUser: { username: 'admin' },
                 profileSettings: { newUsername: '', currentPassword: '', newPassword: '', confirmPassword: '' },
+                
+                // Data for printing
+                printData: {},
 
                 init() {
                     if (sessionStorage.getItem('adminAuth') === 'true') {
@@ -624,7 +741,7 @@
                         this.isLoggedIn = true;
                         sessionStorage.setItem('adminAuth', 'true');
                         this.loadMockData();
-                        this.showToast('Welcome to Halem Ops');
+                        this.showToast('Welcome to CRONY');
                     } else {
                         this.loginError = true;
                         this.password = '';
@@ -643,23 +760,25 @@
                         'dashboard': 'Dashboard Overview',
                         'reg': 'Registration Forms',
                         'payment': 'Payment Operations',
+                        'invoices': 'Billing & Invoices',
                         'customers': 'Customer Directory',
                         'analytics': 'Business Analytics',
                         'settings': 'System Settings'
                     };
-                    return titles[this.currentTab] || 'Admin Panel';
+                    return titles[this.currentTab] || 'CRONY Admin';
                 },
                 
                 loadMockData() {
                     this.loading = true;
                     setTimeout(() => {
                         this.bookings = [
-                            { id: 'SGEVE001', date: '15/12/2025', company: 'Tech Solutions Pte Ltd', pic: 'John Tan', phone: '+6598765432', email: 'john@techsolutions.sg', booths: ['A1', 'A2'], total: 9900, status: 'CONFIRMED', payment: 'FULL PAID', remarks: 'VIP Partner', billingAddress: '100 Orchard Road', sellingItems: 'Electronics', formSubmitted: true, receiptUrl: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=400&q=80' },
-                            { id: 'SGEVE002', date: '16/12/2025', company: 'Organic Health Store', pic: 'Dr. Sarah Lim', phone: '+6512345678', email: 'sarah@organichealth.com', booths: ['B10'], total: 3300, status: 'CONFIRMED', payment: 'FULL PAID', remarks: '', billingAddress: '45 Balestier Road', sellingItems: 'Supplements', formSubmitted: true, receiptUrl: 'https://images.unsplash.com/photo-1607863680198-23d4b2565df0?w=400&q=80' },
-                            { id: 'SGEVE004', date: '18/12/2025', company: 'Fashion Forward', pic: 'Cik Siti', phone: '+6598765432', email: 'siti@fashion.sg', booths: ['C5', 'C6'], total: 6600, status: 'CONFIRMED', payment: 'DEPOSIT', remarks: 'Pending bal', billingAddress: '78 Bugis Street', sellingItems: 'Apparel', formSubmitted: true, receiptUrl: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=400&q=80' },
-                            { id: 'SGEVE005', date: '19/12/2025', company: 'Craft Creations', pic: 'Amy Wong', phone: '+6587654321', email: 'amy@craft.com', booths: ['E8'], total: 3300, status: 'CONFIRMED', payment: 'DEPOSIT', remarks: '', billingAddress: '234 Sims Avenue', sellingItems: 'Handicrafts', formSubmitted: false, receiptUrl: null },
-                            { id: 'SGEVE007', date: '21/12/2025', company: 'Baby Bloom', pic: 'Mrs. Goh', phone: '+6511122233', email: 'goh@babybloom.com', booths: ['F1', 'F2'], total: 6600, status: 'PENDING', payment: 'UNPAID', remarks: 'Awaiting transfer', billingAddress: '55 Marine Parade', sellingItems: 'Baby Products', formSubmitted: false, receiptUrl: null },
-                            { id: 'SGEVE011', date: '10/12/2025', company: 'Quick Bites Co', pic: 'Mr. Kumar', phone: '+6511223344', email: 'kumar@qb.com', booths: ['B1', 'B2'], total: 6600, status: 'CANCELLED', payment: 'UNPAID', remarks: 'Conflict', billingAddress: '11 Clementi Road', sellingItems: 'Fast Food', formSubmitted: false, receiptUrl: null }
+                            { id: 'SGEVE001', date: '15/12/2025', company: 'Tech Solutions Pte Ltd', pic: 'John Tan', phone: '+6598765432', email: 'john@techsolutions.sg', booths: ['A1', 'A2', 'A3'], total: 9900, status: 'CONFIRMED', payment: 'FULL PAID', remarks: 'VIP Partner', billingAddress: '100 Orchard Road, #12-01', sellingItems: 'Electronics & Gadgets', formSubmitted: true, receiptDeposit: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=400&q=80', receiptBalance: 'https://images.unsplash.com/photo-1607863680198-23d4b2565df0?w=400&q=80' },
+                            { id: 'SGEVE002', date: '16/12/2025', company: 'Organic Health Store', pic: 'Dr. Sarah Lim', phone: '+6512345678', email: 'sarah@organichealth.com', booths: ['B10'], total: 3300, status: 'CONFIRMED', payment: 'FULL PAID', remarks: 'Health exhibitor', billingAddress: '45 Balestier Road', sellingItems: 'Organic Supplements', formSubmitted: true, receiptDeposit: 'https://images.unsplash.com/photo-1607863680198-23d4b2565df0?w=400&q=80', receiptBalance: null },
+                            { id: 'SGEVE003', date: '17/12/2025', company: 'Mega Food Industries', pic: 'En. Razak', phone: '+60123456789', email: 'razak@megafood.com', booths: ['D1', 'D2', 'D3'], total: 9900, status: 'CONFIRMED', payment: 'FULL PAID', remarks: 'Regular', billingAddress: '123 Jalan Kilang', sellingItems: 'Frozen Food', formSubmitted: true, receiptDeposit: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=400&q=80', receiptBalance: null },
+                            { id: 'SGEVE004', date: '18/12/2025', company: 'Fashion Forward', pic: 'Cik Siti', phone: '+6598765432', email: 'siti@fashionforward.sg', booths: ['C5', 'C6'], total: 6600, status: 'CONFIRMED', payment: 'DEPOSIT', remarks: 'Balance due Jan 2026', billingAddress: '78 Bugis Street', sellingItems: 'Fashion Apparel', formSubmitted: true, receiptDeposit: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=400&q=80', receiptBalance: null },
+                            { id: 'SGEVE005', date: '19/12/2025', company: 'Craft Creations', pic: 'Amy Wong', phone: '+6587654321', email: 'amy@craftcreations.com', booths: ['E8'], total: 3300, status: 'CONFIRMED', payment: 'DEPOSIT', remarks: '', billingAddress: '234 Sims Avenue', sellingItems: 'Handicrafts', formSubmitted: false, receiptDeposit: 'https://images.unsplash.com/photo-1607863680198-23d4b2565df0?w=400&q=80', receiptBalance: null },
+                            { id: 'SGEVE007', date: '21/12/2025', company: 'Baby Bloom Products', pic: 'Mrs. Goh', phone: '+6511122233', email: 'goh@babybloom.com', booths: ['F1', 'F2'], total: 6600, status: 'PENDING', payment: 'UNPAID', remarks: 'Awaiting payment', billingAddress: '55 Marine Parade', sellingItems: 'Baby Products', formSubmitted: false, receiptDeposit: null, receiptBalance: null },
+                            { id: 'SGEVE011', date: '10/12/2025', company: 'Quick Bites Co', pic: 'Mr. Kumar', phone: '+6511223344', email: 'kumar@quickbites.com', booths: ['B1', 'B2'], total: 6600, status: 'CANCELLED', payment: 'UNPAID', remarks: 'Conflict', billingAddress: '11 Clementi Road', sellingItems: 'Fast Food', formSubmitted: false, receiptDeposit: null, receiptBalance: null }
                         ];
                         this.loading = false;
                     }, 400);
@@ -667,13 +786,16 @@
 
                 refreshData() {
                     this.loading = true;
-                    setTimeout(() => { this.loadMockData(); this.showToast('Data refreshed'); }, 500);
+                    setTimeout(() => {
+                        this.loadMockData();
+                        this.showToast('System data refreshed');
+                    }, 500);
                 },
 
                 get filteredRegBookings() {
                     if (!this.regSearch) return this.bookings;
                     const q = this.regSearch.toLowerCase();
-                    return this.bookings.filter(b => b.id.toLowerCase().includes(q) || b.company.toLowerCase().includes(q) || b.billingAddress.toLowerCase().includes(q));
+                    return this.bookings.filter(b => b.id.toLowerCase().includes(q) || b.company.toLowerCase().includes(q) || (b.billingAddress && b.billingAddress.toLowerCase().includes(q)));
                 },
 
                 get filteredPaymentBookings() {
@@ -683,15 +805,19 @@
                 },
 
                 get filteredCustomerTableData() {
-                    const data = this.bookings.map(b => ({ ...b, paid: b.payment === 'FULL PAID' ? b.total : (b.payment === 'DEPOSIT' ? b.total * 0.5 : 0), balance: b.total - (b.payment === 'FULL PAID' ? b.total : (b.payment === 'DEPOSIT' ? b.total * 0.5 : 0)) }));
+                    const data = this.bookings.map(b => {
+                        const paid = b.payment === 'FULL PAID' ? b.total : (b.payment === 'DEPOSIT' ? b.total * 0.5 : 0);
+                        return { ...b, paid: paid, balance: b.total - paid };
+                    });
                     if (!this.customerSearch) return data;
                     const q = this.customerSearch.toLowerCase();
-                    return data.filter(b => b.id.toLowerCase().includes(q) || b.company.toLowerCase().includes(q) || b.pic.toLowerCase().includes(q));
+                    return data.filter(b => b.id.toLowerCase().includes(q) || b.company.toLowerCase().includes(q) || b.pic.toLowerCase().includes(q) || b.phone.toLowerCase().includes(q) || b.email.toLowerCase().includes(q));
                 },
 
                 get stats() {
                     const confirmed = this.bookings.filter(b => b.status === 'CONFIRMED');
                     const pending = this.bookings.filter(b => b.status === 'PENDING');
+                    const cancelled = this.bookings.filter(b => b.status === 'CANCELLED');
                     const fullPaid = this.bookings.filter(b => b.payment === 'FULL PAID');
                     const deposit = this.bookings.filter(b => b.payment === 'DEPOSIT');
                     const unpaid = this.bookings.filter(b => b.payment === 'UNPAID');
@@ -702,7 +828,7 @@
                         pending: pending.length,
                         confirmedCount: confirmed.length,
                         pendingCount: pending.length,
-                        cancelledCount: this.bookings.filter(b => b.status === 'CANCELLED').length,
+                        cancelledCount: cancelled.length,
                         totalBookings: this.bookings.length,
                         fullPaidRevenue: fullPaid.reduce((a, c) => a + c.total, 0),
                         depositRevenue: deposit.reduce((a, c) => a + c.total, 0),
@@ -715,66 +841,130 @@
                 get filteredBookings() {
                     if (!this.search) return this.bookings;
                     const q = this.search.toLowerCase();
-                    return this.bookings.filter(b => b.id.toLowerCase().includes(q) || b.company.toLowerCase().includes(q) || b.pic.toLowerCase().includes(q));
+                    return this.bookings.filter(b => b.id.toLowerCase().includes(q) || b.company.toLowerCase().includes(q) || b.pic.toLowerCase().includes(q) || b.phone.toLowerCase().includes(q) || b.email.toLowerCase().includes(q));
                 },
 
                 exportToCSV() {
-                    this.showToast('Generating CSV file...');
-                    setTimeout(() => { this.showToast('Export complete!'); }, 1500);
+                    const data = this.filteredBookings;
+                    if (data.length === 0) { this.showToast('No data to export'); return; }
+                    
+                    const headers = ['ID', 'Date', 'Company', 'PIC', 'Phone', 'Email', 'Booths', 'Total', 'Status', 'Payment', 'Billing Address'];
+                    const rows = data.map(b => [b.id, b.date, b.company, b.pic, b.phone, b.email, b.booths.join('; '), b.total, b.status, b.payment, b.billingAddress]);
+                    const csvContent = [headers.join(','), ...rows.map(row => row.map(cell => `"${String(cell || '').replace(/"/g, '""')}"`).join(','))].join('\n');
+                    
+                    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = `crony_export_${new Date().toISOString().split('T')[0]}.csv`;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    
+                    this.showToast('CSV Exported successfully');
                 },
 
-                openEditModal(b) { this.editModal.data = JSON.parse(JSON.stringify(b)); this.editModal.open = true; },
+                // --- MODAL FUNCTIONS (INCLUDING FULL EDIT) ---
+                openEditModal(b) {
+                    this.editModal.data = JSON.parse(JSON.stringify(b));
+                    this.editModal.open = true;
+                },
+                
                 saveEdit() {
                     const idx = this.bookings.findIndex(b => b.id === this.editModal.data.id);
-                    if (idx !== -1) this.bookings[idx] = this.editModal.data;
+                    if (idx !== -1) {
+                        this.bookings[idx] = { ...this.editModal.data, total: parseFloat(this.editModal.data.total) };
+                    }
                     this.editModal.open = false;
                     this.showToast('Customer details updated');
                 },
-                saveData(b) { this.showToast(`Saved ${b.id} status`); },
                 
-                openUploadModal(b, type) { this.uploadModal = { open: true, bookingId: b.id, type: type, preview: null, file: null, loading: false }; },
+                saveData(b) {
+                    this.showToast(`Updated status for ${b.id}`);
+                },
+                
+                openUploadModal(b, type) {
+                    this.uploadModal = { open: true, bookingId: b.id, type: type, preview: null, file: null, loading: false };
+                },
+                
                 handleFileSelect(e) {
                     const f = e.target.files[0];
-                    if (f) { this.uploadModal.file = f; this.uploadModal.preview = URL.createObjectURL(f); }
+                    if (f) {
+                        this.uploadModal.file = f;
+                        this.uploadModal.preview = URL.createObjectURL(f);
+                    }
                 },
+                
                 saveUpload() {
                     if (!this.uploadModal.file) { this.showToast('Please select a file'); return; }
                     this.uploadModal.loading = true;
                     setTimeout(() => {
                         const idx = this.bookings.findIndex(b => b.id === this.uploadModal.bookingId);
-                        if (this.uploadModal.type.includes('Payment')) {
-                            this.bookings[idx].receiptUrl = this.uploadModal.preview;
+                        if (this.uploadModal.type === 'Deposit') {
+                            this.bookings[idx].receiptDeposit = this.uploadModal.preview;
                             this.bookings[idx].payment = 'DEPOSIT';
+                        } else if (this.uploadModal.type === 'Balance') {
+                            this.bookings[idx].receiptBalance = this.uploadModal.preview;
+                            this.bookings[idx].payment = 'FULL PAID';
                         } else {
                             this.bookings[idx].formSubmitted = true;
                         }
                         this.uploadModal.open = false;
                         this.uploadModal.loading = false;
-                        this.showToast('File uploaded successfully');
+                        this.showToast(`${this.uploadModal.type} uploaded successfully`);
                     }, 800);
                 },
-                viewImage(url) { this.previewImage = { open: true, url: url }; },
-                printInvoice(b) { this.showToast('Opening invoice generator...'); },
                 
-                openAddCustomerModal() { this.addCustomerModal.data = { company: '', pic: '', phone: '', email: '', total: 0, booths: '' }; this.addCustomerModal.open = true; },
+                viewImage(url) {
+                    this.previewImage = { open: true, url: url };
+                },
+                
+                openAddCustomerModal() {
+                    this.addCustomerModal.data = { company: '', pic: '', phone: '', email: '', total: 0, booths: '', billingAddress: '', sellingItems: '' };
+                    this.addCustomerModal.open = true;
+                },
+                
                 saveNewCustomer() {
-                    if (!this.addCustomerModal.data.company) { this.showToast('Company name required'); return; }
+                    if (!this.addCustomerModal.data.company) { this.showToast('Company name is required'); return; }
                     const newId = 'SGEVE' + String(this.bookings.length + 1).padStart(3, '0');
                     const boothsArray = this.addCustomerModal.data.booths.split(',').map(b => b.trim()).filter(b => b);
                     this.bookings.unshift({
-                        id: newId, date: new Date().toLocaleDateString('en-GB'), company: this.addCustomerModal.data.company,
-                        pic: this.addCustomerModal.data.pic, phone: this.addCustomerModal.data.phone, email: this.addCustomerModal.data.email,
-                        booths: boothsArray, total: parseFloat(this.addCustomerModal.data.total) || 0, status: 'PENDING', payment: 'UNPAID',
-                        remarks: '', billingAddress: '', sellingItems: '', formSubmitted: false, receiptUrl: null
+                        id: newId,
+                        date: new Date().toLocaleDateString('en-GB'),
+                        company: this.addCustomerModal.data.company,
+                        pic: this.addCustomerModal.data.pic,
+                        phone: this.addCustomerModal.data.phone,
+                        email: this.addCustomerModal.data.email,
+                        booths: boothsArray,
+                        total: parseFloat(this.addCustomerModal.data.total) || 0,
+                        status: 'PENDING',
+                        payment: 'UNPAID',
+                        remarks: '',
+                        billingAddress: this.addCustomerModal.data.billingAddress,
+                        sellingItems: this.addCustomerModal.data.sellingItems,
+                        formSubmitted: false,
+                        receiptDeposit: null,
+                        receiptBalance: null
                     });
                     this.addCustomerModal.open = false;
-                    this.showToast('New customer added');
+                    this.showToast('New customer successfully added');
                 },
 
                 updateProfile() {
-                    if (!this.profileSettings.newPassword) { this.showToast('Please fill required fields'); return; }
-                    this.showToast('Profile settings updated');
+                    if (!this.profileSettings.newPassword || !this.profileSettings.confirmPassword) { this.showToast('Please fill all password fields'); return; }
+                    if (this.profileSettings.newPassword !== this.profileSettings.confirmPassword) { this.showToast('Passwords do not match'); return; }
+                    this.showToast('Profile updated successfully');
                     this.profileSettings = { newUsername: '', currentPassword: '', newPassword: '', confirmPassword: '' };
+                },
+
+                // --- INVOICE PRINT LOGIC ---
+                triggerPrint(booking, docType) {
+                    // Update print data bound to the hidden #printable-invoice div
+                    this.printData = { ...booking, docType: docType };
+                    
+                    // Give Alpine.js a tiny moment to update the DOM with the new data
+                    setTimeout(() => {
+                        window.print();
+                    }, 150);
                 }
             }));
         });

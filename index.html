@@ -1,247 +1,246 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Halem Ops | Event Control Center</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
-    
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
-    
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
-        /* Neumorphism Base Variables & Utilities */
-        :root {
-            --bg-color: #e0e5ec;
-            --shadow-light: rgba(255, 255, 255, 0.7);
-            --shadow-dark: rgba(163, 177, 198, 0.6);
-        }
-        body {
-            background-color: var(--bg-color);
-        }
+        /* Custom Scrollbar for sleek look */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #475569; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #64748b; }
         
-        /* Neumorphic Components */
-        .neu-flat {
-            background: var(--bg-color);
-            box-shadow: 9px 9px 16px var(--shadow-dark), -9px -9px 16px var(--shadow-light);
-            border-radius: 1rem;
+        /* Glassmorphism Utilities */
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
         }
-        .neu-pressed {
-            background: var(--bg-color);
-            box-shadow: inset 6px 6px 10px var(--shadow-dark), inset -6px -6px 10px var(--shadow-light);
-            border-radius: 1rem;
+        .glass-button {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            transition: all 0.3s ease;
         }
-        .neu-button {
-            background: var(--bg-color);
-            box-shadow: 5px 5px 10px var(--shadow-dark), -5px -5px 10px var(--shadow-light);
-            border-radius: 0.5rem;
-            transition: all 0.2s ease;
-        }
-        .neu-button:active {
-            box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light);
-        }
-        .neu-input {
-            background: var(--bg-color);
-            box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light);
-            border-radius: 0.5rem;
-            border: none;
-            outline: none;
-        }
-        .neu-input:focus {
-            box-shadow: inset 6px 6px 12px var(--shadow-dark), inset -6px -6px 12px var(--shadow-light);
+        .glass-button:hover {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.2) 0%, rgba(59, 130, 246, 0.2) 100%);
+            border-color: rgba(56, 189, 248, 0.4);
+            transform: translateY(-1px);
         }
     </style>
 </head>
-<body class="text-gray-700 font-sans antialiased h-screen flex overflow-hidden" x-data="{ currentTab: 'overview' }">
+<body class="bg-[#0f172a] text-slate-200 font-sans h-screen flex overflow-hidden relative" 
+      x-data="{ currentTab: 'overview', toastMessage: '', showToast(msg) { this.toastMessage = msg; setTimeout(() => this.toastMessage = '', 3000); } }">
 
-    <aside class="w-64 flex-shrink-0 h-full p-6 flex flex-col justify-between hidden md:flex">
-        <div>
-            <div class="neu-flat p-4 mb-8 text-center font-bold text-xl tracking-wider text-gray-800">
-                HALEM OPS <br><span class="text-xs text-gray-500 font-normal">Food Fest Control</span>
+    <div class="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+    <aside class="w-64 glass-panel border-r border-slate-700/50 flex flex-col justify-between hidden md:flex z-10 relative">
+        <div class="p-6">
+            <div class="flex items-center gap-3 mb-10">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center font-bold text-white shadow-lg shadow-blue-500/30">H</div>
+                <div>
+                    <h1 class="font-bold text-lg tracking-wide text-white">HALEM OPS</h1>
+                    <p class="text-[10px] text-slate-400 uppercase tracking-widest">Control Center</p>
+                </div>
             </div>
 
-            <nav class="space-y-4">
-                <button @click="currentTab = 'overview'" :class="currentTab === 'overview' ? 'neu-pressed text-blue-600 font-bold' : 'neu-flat'" class="w-full text-left px-4 py-3 rounded-xl transition">📊 Overview</button>
-                <button @click="currentTab = 'vendors'" :class="currentTab === 'vendors' ? 'neu-pressed text-blue-600 font-bold' : 'neu-flat'" class="w-full text-left px-4 py-3 rounded-xl transition">🏪 Vendors (Inbox/Docs)</button>
-                <button @click="currentTab = 'finance'" :class="currentTab === 'finance' ? 'neu-pressed text-blue-600 font-bold' : 'neu-flat'" class="w-full text-left px-4 py-3 rounded-xl transition">💰 Finance & Billing</button>
-                <button @click="currentTab = 'ops'" :class="currentTab === 'ops' ? 'neu-pressed text-blue-600 font-bold' : 'neu-flat'" class="w-full text-left px-4 py-3 rounded-xl transition">🗺️ Floorplan & Ops</button>
-                <button @click="currentTab = 'comms'" :class="currentTab === 'comms' ? 'neu-pressed text-blue-600 font-bold' : 'neu-flat'" class="w-full text-left px-4 py-3 rounded-xl transition">📢 Communications</button>
+            <nav class="space-y-2 text-sm font-medium">
+                <button @click="currentTab = 'overview'" :class="currentTab === 'overview' ? 'bg-blue-500/10 text-blue-400 border-r-2 border-blue-500' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'" class="w-full text-left px-4 py-3 rounded-lg transition-all flex items-center gap-3">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                    Dashboard
+                </button>
+                <button @click="currentTab = 'vendors'" :class="currentTab === 'vendors' ? 'bg-blue-500/10 text-blue-400 border-r-2 border-blue-500' : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'" class="w-full text-left px-4 py-3 rounded-lg transition-all flex items-center gap-3">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                    Vendors
+                </button>
             </nav>
         </div>
-
-        <div class="neu-flat p-4 text-center text-sm">
-            <p class="font-semibold mb-2">Role: Event Director</p>
-            <button class="neu-button px-4 py-2 w-full text-xs">Toggle Dark Theme</button>
+        
+        <div class="p-6 border-t border-slate-700/50">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-xs">DIR</div>
+                <div class="text-sm">
+                    <p class="font-medium text-white">Event Director</p>
+                    <p class="text-xs text-green-400">● Online</p>
+                </div>
+            </div>
         </div>
     </aside>
 
-    <main class="flex-1 h-full overflow-y-auto p-4 md:p-8">
+    <main class="flex-1 h-full overflow-y-auto p-4 md:p-8 z-10 relative">
         
         <header class="flex justify-between items-center mb-8 gap-4 flex-wrap">
-            <h1 class="text-3xl font-bold text-gray-800" x-text="currentTab.charAt(0).toUpperCase() + currentTab.slice(1)"></h1>
+            <h2 class="text-2xl font-bold text-white tracking-tight" x-text="currentTab.charAt(0).toUpperCase() + currentTab.slice(1)"></h2>
             
-            <div class="relative w-full md:w-96">
-                <input type="text" 
-                       class="neu-input w-full px-4 py-3" 
-                       placeholder="Search vendor, booth, or phone..."
-                       name="search"
-                       hx-post="/api/search-vendors" 
-                       hx-trigger="keyup changed delay:500ms, search" 
-                       hx-target="#search-results">
-                <div id="search-results" class="absolute top-full mt-2 w-full z-50"></div>
+            <div class="flex items-center gap-4 w-full md:w-auto">
+                <div class="relative w-full md:w-80 group">
+                    <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-blue-400 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    <input type="text" 
+                           class="w-full bg-slate-800/50 border border-slate-700 text-sm rounded-xl pl-10 pr-4 py-2.5 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-white placeholder-slate-500" 
+                           placeholder="Search vendors..."
+                           @keyup.enter="showToast('Searching database...')">
+                </div>
+                <button @click="showToast('Preparing CSV download...')" class="glass-button px-4 py-2.5 rounded-xl text-sm font-medium text-blue-400 hidden md:flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                    Export
+                </button>
             </div>
-            
-            <button class="neu-button px-6 py-3 font-semibold text-green-600 hidden md:block">
-                📥 Export CSV
-            </button>
         </header>
 
-        <div x-show="currentTab === 'overview'" x-transition class="space-y-6">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6" hx-get="/api/live-stats" hx-trigger="every 30s">
-                <div class="neu-flat p-6 flex flex-col items-center justify-center">
-                    <span class="text-gray-500 text-sm font-semibold uppercase tracking-wider">Total Vendors</span>
-                    <span class="text-4xl font-bold text-gray-800 mt-2">124</span>
+        <div x-show="currentTab === 'overview'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0" class="space-y-6">
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+                <div class="glass-panel p-6 rounded-2xl relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-24 h-24 bg-blue-500/10 rounded-full blur-2xl group-hover:bg-blue-500/20 transition-all"></div>
+                    <h3 class="text-slate-400 text-xs font-semibold tracking-wider uppercase mb-2">Total Vendors</h3>
+                    <p class="text-3xl font-bold text-white">124</p>
+                    <p class="text-xs text-green-400 mt-2 flex items-center gap-1">↑ 12% this week</p>
                 </div>
-                <div class="neu-flat p-6 flex flex-col items-center justify-center">
-                    <span class="text-gray-500 text-sm font-semibold uppercase tracking-wider">Available Booths</span>
-                    <span class="text-4xl font-bold text-blue-600 mt-2">16 / 140</span>
+                
+                <div class="glass-panel p-6 rounded-2xl relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-24 h-24 bg-purple-500/10 rounded-full blur-2xl group-hover:bg-purple-500/20 transition-all"></div>
+                    <h3 class="text-slate-400 text-xs font-semibold tracking-wider uppercase mb-2">Booths Sold</h3>
+                    <p class="text-3xl font-bold text-white">124 <span class="text-slate-500 text-lg">/ 140</span></p>
+                    <div class="w-full bg-slate-700 h-1.5 rounded-full mt-3"><div class="bg-blue-500 h-1.5 rounded-full" style="width: 88%"></div></div>
                 </div>
-                <div class="neu-flat p-6 flex flex-col items-center justify-center">
-                    <span class="text-gray-500 text-sm font-semibold uppercase tracking-wider">Collections (RM)</span>
-                    <span class="text-4xl font-bold text-green-600 mt-2">85,400</span>
+
+                <div class="glass-panel p-6 rounded-2xl md:col-span-2 relative overflow-hidden flex flex-col justify-center">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h3 class="text-slate-400 text-xs font-semibold tracking-wider uppercase mb-2">Total Collections</h3>
+                            <p class="text-3xl font-bold text-emerald-400">RM 85,400.00</p>
+                        </div>
+                        <button @click="showToast('Redirecting to Payment Gateway logs...')" class="text-xs bg-slate-800 border border-slate-600 px-3 py-1.5 rounded-lg hover:bg-slate-700 transition">View Logs</button>
+                    </div>
                 </div>
             </div>
 
-            <div class="neu-flat p-6 h-64 overflow-y-auto">
-                <h3 class="font-bold mb-4">Live Audit Trail</h3>
-                <ul class="text-sm space-y-2 text-gray-600">
-                    <li><span class="text-green-500 font-bold">●</span> Admin approved payment for <span class="font-bold">Kopi Boom (Booth A12)</span></li>
-                    <li><span class="text-blue-500 font-bold">●</span> Vendor <span class="font-bold">Ayam Gunting Viral</span> uploaded Typhoid cert.</li>
-                    <li><span class="text-red-500 font-bold">●</span> System flagged <span class="font-bold">Dessert Box</span> for incomplete documents.</li>
-                </ul>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="glass-panel rounded-2xl p-6 lg:col-span-2 h-80 flex flex-col">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="font-semibold text-white">Recent Vendor Activity</h3>
+                        <span class="flex h-2 w-2 relative">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                        </span>
+                    </div>
+                    <div class="flex-1 overflow-y-auto space-y-4 pr-2">
+                        <div class="flex items-start gap-4">
+                            <div class="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 mt-1">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            </div>
+                            <div>
+                                <p class="text-sm text-slate-300">Payment approved for <span class="font-medium text-white">Ayam Gunting Viral</span></p>
+                                <p class="text-xs text-slate-500 mt-1">2 mins ago</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div class="w-8 h-8 rounded-full bg-yellow-500/20 flex items-center justify-center text-yellow-400 mt-1">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+                            </div>
+                            <div>
+                                <p class="text-sm text-slate-300"><span class="font-medium text-white">Taco Baju Merah</span> uploaded SSM Certificate</p>
+                                <p class="text-xs text-slate-500 mt-1">15 mins ago</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-panel rounded-2xl p-6 flex flex-col gap-3">
+                    <h3 class="font-semibold text-white mb-2">Quick Actions</h3>
+                    <button @click="showToast('Opening Floorplan Editor...')" class="w-full bg-slate-800/50 hover:bg-slate-700/50 border border-slate-700 p-3 rounded-xl text-sm text-left transition-colors flex items-center gap-3">
+                        <span>🗺️</span> Manage Floorplan
+                    </button>
+                    <button @click="showToast('Scanning QR Pass...')" class="w-full bg-slate-800/50 hover:bg-slate-700/50 border border-slate-700 p-3 rounded-xl text-sm text-left transition-colors flex items-center gap-3">
+                        <span>📷</span> Scan Vendor E-Pass
+                    </button>
+                    <button @click="showToast('Opening Announcement Composer...')" class="w-full bg-blue-600/20 hover:bg-blue-600/30 border border-blue-500/30 text-blue-400 p-3 rounded-xl text-sm text-left transition-colors flex items-center gap-3 mt-auto">
+                        <span>📢</span> Blast Announcement
+                    </button>
+                </div>
             </div>
         </div>
 
-        <div x-show="currentTab === 'vendors'" x-transition style="display: none;" class="space-y-6">
-            <div class="neu-flat p-6">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="font-bold text-lg">Application Inbox (Pending)</h3>
-                    <div class="space-x-2">
-                        <span class="neu-pressed px-3 py-1 text-xs rounded-full">All</span>
-                        <span class="neu-button px-3 py-1 text-xs rounded-full">F&B Hot</span>
-                        <span class="neu-button px-3 py-1 text-xs rounded-full">Drinks</span>
+        <div x-show="currentTab === 'vendors'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0" style="display: none;" class="space-y-6">
+            <div class="glass-panel rounded-2xl p-6">
+                <div class="flex flex-wrap justify-between items-center mb-6 gap-4">
+                    <h3 class="font-semibold text-white">Pending Applications</h3>
+                    <div class="flex bg-slate-800/50 p-1 rounded-lg border border-slate-700">
+                        <button class="px-3 py-1.5 text-xs font-medium rounded-md bg-slate-700 text-white shadow">All Docs</button>
+                        <button class="px-3 py-1.5 text-xs font-medium rounded-md text-slate-400 hover:text-white transition">Missing SSM</button>
                     </div>
                 </div>
-                
+
                 <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm">
+                    <table class="w-full text-left text-sm whitespace-nowrap">
                         <thead>
-                            <tr class="border-b border-gray-300">
-                                <th class="p-3">Brand Name</th>
-                                <th class="p-3">Category</th>
-                                <th class="p-3">Docs (SSM/Typhoid)</th> <th class="p-3">T&C Status</th> <th class="p-3">Action</th>
+                            <tr class="text-slate-400 border-b border-slate-700/50">
+                                <th class="pb-3 font-medium px-4">Brand Name</th>
+                                <th class="pb-3 font-medium px-4">Category</th>
+                                <th class="pb-3 font-medium px-4">Status</th>
+                                <th class="pb-3 font-medium px-4 text-right">Actions</th>
                             </tr>
                         </thead>
-                        <tbody id="vendor-list" hx-get="/api/get-pending-vendors" hx-trigger="load">
-                            <tr class="border-b border-gray-300 hover:bg-gray-50/50 transition">
-                                <td class="p-3 font-semibold">Taco Baju Merah</td>
-                                <td class="p-3"><span class="bg-red-100 text-red-600 px-2 py-1 rounded text-xs">F&B Hot</span></td>
-                                <td class="p-3 text-yellow-600 text-xs">⚠️ Pending SSM</td>
-                                <td class="p-3 text-green-600 text-xs">Signed</td>
-                                <td class="p-3 flex gap-2">
-                                    <button class="neu-button px-3 py-1 text-green-600 hover:bg-green-100" hx-put="/api/approve/1" hx-target="closest tr" hx-swap="outerHTML">Approve</button>
-                                    <button class="neu-button px-3 py-1 text-red-600 hover:bg-red-100" hx-put="/api/reject/1" hx-target="closest tr" hx-swap="outerHTML">Reject</button>
+                        <tbody class="divide-y divide-slate-700/50">
+                            <tr class="hover:bg-slate-800/30 transition-colors group">
+                                <td class="py-4 px-4">
+                                    <p class="font-medium text-white">Burger Kaw Kaw</p>
+                                    <p class="text-xs text-slate-500">Requested: Booth A12</p>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <span class="bg-orange-500/10 text-orange-400 border border-orange-500/20 px-2.5 py-1 rounded-md text-[10px] uppercase font-semibold">F&B Hot</span>
+                                </td>
+                                <td class="py-4 px-4">
+                                    <span class="flex items-center gap-1.5 text-yellow-400 text-xs">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                        Pending Review
+                                    </span>
+                                </td>
+                                <td class="py-4 px-4 text-right">
+                                    <button @click="showToast('Approving Burger Kaw Kaw...')" class="bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-3 py-1.5 rounded-lg text-xs transition-colors mr-2">Approve</button>
+                                    <button @click="showToast('Application Rejected')" class="bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 px-3 py-1.5 rounded-lg text-xs transition-colors">Reject</button>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-            <button class="neu-button px-4 py-2 text-red-600 text-sm font-semibold">⚠️ View Blacklisted Vendors</button>
-        </div>
-
-        <div x-show="currentTab === 'finance'" x-transition style="display: none;" class="space-y-6">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="neu-flat p-6">
-                    <h3 class="font-bold text-lg mb-4">Pending Verifications</h3>
-                    <div class="neu-pressed p-4 mb-4 flex justify-between items-center">
-                        <div>
-                            <p class="font-bold">Burger Kaw Kaw</p>
-                            <p class="text-xs text-gray-500">Deposit: RM 1,500</p>
-                            <a href="#" class="text-blue-500 text-xs underline">View Receipt.pdf</a>
-                        </div>
-                        <div class="flex flex-col gap-2">
-                            <button class="neu-button px-3 py-1 text-xs text-green-600" hx-post="/api/verify-payment/2">Confirm Paid</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="neu-flat p-6">
-                    <h3 class="font-bold text-lg mb-4">Invoicing Engine</h3>
-                    <div class="space-y-4">
-                        <div>
-                            <label class="text-xs font-bold text-gray-500">Current Phase Pricing</label>
-                            <select class="neu-input w-full p-2 mt-1">
-                                <option>Early Bird (RM 2500)</option>
-                                <option>Normal (RM 3500)</option>
-                                <option>Premium Corner (RM 4500)</option>
-                            </select>
-                        </div>
-                        <button class="neu-button w-full py-3 text-center font-bold text-gray-700" hx-post="/api/generate-batch-invoice">
-                            Generate & Send Pending Invoices
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div x-show="currentTab === 'ops'" x-transition style="display: none;" class="space-y-6">
-            <div class="neu-flat p-6 h-96 flex flex-col justify-center items-center relative">
-                <h3 class="absolute top-6 left-6 font-bold">Interactive Floorplan (Live)</h3>
-                <div class="grid grid-cols-5 gap-2 w-full max-w-lg mt-8">
-                    <div class="neu-pressed h-16 rounded-lg flex items-center justify-center text-xs font-bold cursor-pointer hover:bg-gray-200">A1</div>
-                    <div class="neu-button bg-green-200 h-16 rounded-lg flex flex-col items-center justify-center text-xs cursor-pointer"><span class="font-bold">A2</span><span class="text-[10px]">Taco Baju</span></div>
-                    <div class="neu-button bg-red-200 h-16 rounded-lg flex flex-col items-center justify-center text-xs cursor-pointer"><span class="font-bold">A3</span><span class="text-[10px]">Locked VIP</span></div> <div class="neu-pressed h-16 rounded-lg flex items-center justify-center text-xs font-bold cursor-pointer">A4</div>
-                    <div class="neu-pressed h-16 rounded-lg flex items-center justify-center text-xs font-bold cursor-pointer">A5</div>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <button class="neu-button p-4 text-center font-bold">🚚 Loading Bay Slots</button>
-                <button class="neu-button p-4 text-center font-bold">🎫 Manage E-Pass (QR)</button>
-                <button class="neu-button p-4 text-center font-bold">⛺ Contractor Directory</button>
-            </div>
-        </div>
-
-        <div x-show="currentTab === 'comms'" x-transition style="display: none;" class="space-y-6">
-            <div class="neu-flat p-6">
-                <h3 class="font-bold text-lg mb-4">Push Announcement / Email</h3>
-                <form hx-post="/api/broadcast" hx-target="#broadcast-status" class="space-y-4">
-                    <input type="text" class="neu-input w-full p-3" placeholder="Subject / Title" required>
-                    <textarea class="neu-input w-full p-3 h-32" placeholder="Write your official announcement here..." required></textarea>
-                    <div class="flex gap-4">
-                        <label class="flex items-center gap-2"><input type="checkbox" checked> Vendor Portal</label>
-                        <label class="flex items-center gap-2"><input type="checkbox"> Email Blast</label>
-                    </div>
-                    <button type="submit" class="neu-button px-6 py-3 font-bold text-blue-600">Send Broadcast</button>
-                    <div id="broadcast-status" class="text-sm mt-2"></div>
-                </form>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="neu-flat p-6">
-                    <h3 class="font-bold mb-4">Helpdesk / Tickets</h3>
-                    <div class="neu-pressed p-3 mb-2 text-sm flex justify-between">
-                        <span>"Can I change my booth size?" - Kopi Boom</span>
-                        <a href="https://wa.me/60123456789" target="_blank" class="neu-button px-2 py-1 text-green-600">Reply via WA</a>
-                    </div>
-                </div>
-            </div>
         </div>
 
     </main>
+
+    <div x-show="toastMessage !== ''" 
+         x-transition:enter="transition ease-out duration-300" 
+         x-transition:enter-start="opacity-0 translate-y-10" 
+         x-transition:enter-end="opacity-100 translate-y-0" 
+         x-transition:leave="transition ease-in duration-200" 
+         x-transition:leave-start="opacity-100 translate-y-0" 
+         x-transition:leave-end="opacity-0 translate-y-10" 
+         class="fixed bottom-8 right-8 z-50 glass-panel border border-slate-600 bg-slate-800/90 text-white px-6 py-3 rounded-xl shadow-2xl flex items-center gap-3"
+         style="display: none;">
+        <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        <span x-text="toastMessage" class="text-sm font-medium"></span>
+    </div>
 
 </body>
 </html>
